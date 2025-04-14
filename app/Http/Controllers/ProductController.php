@@ -74,7 +74,7 @@ class ProductController extends Controller
     }
 
     public function updateStock(Request $request, $id) {
-        dd($request->all());
+        // dd($request->all());
 
         $product = Product::findOrFail($id);
 

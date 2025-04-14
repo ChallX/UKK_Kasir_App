@@ -153,7 +153,7 @@
                                     </div>
 
                                     <div class="p-4 md:p-5 space-y-4">
-                                        <form action="{{ route('admin.product.updateStok', $product->id) }}" method="POST"
+                                        <form action="{{ route('admin.product.updateStock', $product->id) }}" method="POST"
                                             enctype="multipart/form-data">
                                             @csrf
                                             @method('PATCH')
@@ -161,7 +161,7 @@
                                                 <label for="nama_product"
                                                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama
                                                     Product</label>
-                                                <input type="text" value="{{ $product->nama_product }}" id="nama_product"
+                                                <input type="text" disabled value="{{ $product->nama_product }}" id="nama_product"
                                                     name="nama_product"
                                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                     required />
