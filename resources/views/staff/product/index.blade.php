@@ -35,7 +35,7 @@
                         <tr>
                             <td><img src="{{ asset('storage/produk/' . $product->image) }}" alt="" width="100"></td>
                             <td>{{ $product->nama_product }}</td>
-                            <td>{{ $product->harga }}</td>
+                            <td>Rp{{ $product->harga }}</td>
                             <td>{{ $product->stock }}</td>
                         </tr>
                     @endforeach

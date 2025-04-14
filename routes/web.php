@@ -22,6 +22,7 @@ Route::middleware(['CheckRole:admin'])->group(function () {
             Route::get('/', [ProductController::class, 'index'])->name('index');
             Route::post('/store', [ProductController::class, 'store'])->name('store');
             Route::patch('/{id}', [ProductController::class, 'update'])->name('update');
+            Route::patch('/stok/{id}', [ProductController::class, 'updateStock'])->name('updateStock');
             Route::delete('/{id}', [ProductController::class, 'destroy'])->name('delete');
             Route::get('/exportExcel', [ProductController::class, 'exportExcel'])->name('exportExcel');
         });

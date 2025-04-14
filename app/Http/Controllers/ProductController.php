@@ -68,10 +68,21 @@ class ProductController extends Controller
             'nama_product' => $request->nama_product,
             'harga' => $request->harga,
             'image' => $imageName,
-            'stock' => $request->stock,
         ]);
 
         return redirect()->back()->with('success', 'Produk berhasil diperbarui.');
+    }
+
+    public function updateStock(Request $request, $id) {
+        dd($request->all());
+
+        $product = Product::findOrFail($id);
+
+        $product->update([
+            'stock' => $request->stock
+        ]);
+
+        return redirect()->back()->with('success', 'Stok Berhasil Diperbarui');
     }
 
     /**

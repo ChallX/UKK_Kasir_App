@@ -195,6 +195,7 @@ class PenjualanController extends Controller
             ->join('penjualan_details', 'penjualans.id', '=', 'penjualan_details.penjualan_id')
             ->join('products', 'penjualan_details.product_id', '=', 'products.id')
             ->select(
+                'penjualans.id as penjualan_id',
                 'members.nama_pelanggan',
                 'members.no_telp',
                 'members.poin',
@@ -207,50 +208,61 @@ class PenjualanController extends Controller
                 'penjualans.change',
                 'penjualans.created_at'
             )
-            ->get();
-
+            ->get()
+            ->groupBy('penjualan_id');
+    
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-
+    
         $headers = [
             'Nama Pelanggan',
             'No HP Pelanggan',
             'Poin Pelanggan',
-            'Produk',
-            'Qty',
-            'Subtotal',
+            'Produk (Qtyx)',
+            'Subtotal Produk',
             'Total Harga',
             'Total Bayar',
             'Total Diskon Poin',
             'Total Kembalian',
             'Tanggal Pembelian'
         ];
-
+    
         $sheet->fromArray($headers, null, 'A1');
-
+    
         $row = 2;
-        foreach ($data as $d) {
-            $sheet->setCellValue('A' . $row, $d->nama_pelanggan ?? 'Bukan Member');
-            $sheet->setCellValue('B' . $row, $d->no_telp ?? '-');
-            $sheet->setCellValue('C' . $row, $d->poin ?? 0);
-            $sheet->setCellValue('D' . $row, $d->nama_product);
-            $sheet->setCellValue('E' . $row, $d->qty);
-            $sheet->setCellValue('F' . $row, $d->subtotal);
-            $sheet->setCellValue('G' . $row, $d->total);
-            $sheet->setCellValue('H' . $row, $d->amount_paid);
-            $sheet->setCellValue('I' . $row, $d->poin_used ?? 0);
-            $sheet->setCellValue('J' . $row, $d->change ?? 0);
-            $sheet->setCellValue('K' . $row, $d->created_at);
+        foreach ($data as $penjualan) {
+            $first = $penjualan->first();
+    
+            $produkGabung = $penjualan->map(function ($item) {
+                return $item->nama_product . ' ' . $item->qty . 'x';
+            })->implode(', ');
+    
+            $subtotalGabung = $penjualan->map(function ($item) {
+                return number_format($item->subtotal, 0, ',', '.');
+            })->implode(', ');
+    
+            $sheet->setCellValue('A' . $row, $first->nama_pelanggan ?? 'Bukan Member');
+            $sheet->setCellValue('B' . $row, $first->no_telp ?? '-');
+            $sheet->setCellValue('C' . $row, $first->poin ?? 0);
+            $sheet->setCellValue('D' . $row, $produkGabung);
+            $sheet->setCellValue('E' . $row, $subtotalGabung);
+            $sheet->setCellValue('F' . $row, $first->total);
+            $sheet->setCellValue('G' . $row, $first->amount_paid);
+            $sheet->setCellValue('H' . $row, $first->poin_used ?? 0);
+            $sheet->setCellValue('I' . $row, $first->change ?? 0);
+            $sheet->setCellValue('J' . $row, $first->created_at);
             $row++;
         }
-
+    
         $writer = new Xlsx($spreadsheet);
         $fileName = 'penjualan.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
         $writer->save($temp_file);
-
+    
         return response()->download($temp_file, $fileName)->deleteFileAfterSend(true);
     }
+    
+    
 
     public function downloadPDF($id)
     {

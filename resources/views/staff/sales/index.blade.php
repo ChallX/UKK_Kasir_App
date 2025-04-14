@@ -51,7 +51,7 @@
                             <td>NON-MEMBER</td>
                         @endif
                         <td>{{ $penjualan->created_at }}</td>
-                        <td>{{ $penjualan->total }}</td>
+                        <td>Rp{{ $penjualan->total }}</td>
                         <td>{{ $penjualan->user->name }}</td>
                         <td>
                             <button type="button" data-modal-target="default-modal-{{ $penjualan->id }}"
