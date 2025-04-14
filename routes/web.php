@@ -23,6 +23,7 @@ Route::middleware(['CheckRole:admin'])->group(function () {
             Route::post('/store', [ProductController::class, 'store'])->name('store');
             Route::patch('/{id}', [ProductController::class, 'update'])->name('update');
             Route::delete('/{id}', [ProductController::class, 'destroy'])->name('delete');
+            Route::get('/exportExcel', [ProductController::class, 'exportExcel'])->name('exportExcel');
         });
 
         Route::prefix('/penjualan')->name('penjualan.')->group(function () {
@@ -33,7 +34,8 @@ Route::middleware(['CheckRole:admin'])->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('index');
             Route::post('/store', [UserController::class, 'store'])->name('store');
             Route::patch('/{id}', [UserController::class, 'update'])->name('update');
-            Route::delete('/{id}', [UserController::class,'destroy'])->name('delete');
+            Route::delete('/{id}', [UserController::class, 'destroy'])->name('delete');
+            Route::get('/exportExcel', [UserController::class, 'exportExcel'])->name('exportExcel');
         });
     });
 });
@@ -51,6 +53,12 @@ Route::middleware(['CheckRole:petugas'])->group(function () {
             Route::get('/', [PenjualanController::class, 'index'])->name('index');
             Route::get('/create', [PenjualanController::class, 'create'])->name('create');
             Route::post('/checkout', [PenjualanController::class, 'checkout'])->name('checkout');
+            Route::post('/payment', [PenjualanController::class, 'paymentHandle'])->name('paymentHandle');
+            Route::get('/member', [PenjualanController::class, 'memberHandle'])->name('memberHandle');
+            Route::post('/memberHandle', [PenjualanController::class, 'memberUpdate'])->name('memberUpdate');
+            Route::get('/receipt/{id}', [PenjualanController::class, 'receipt'])->name('receipt');
+            Route::get('/export-excel', [PenjualanController::class, 'exportExcelPenjualan'])->name('exportExcel');
+            Route::get('/pdf/{id}', [PenjualanController::class, 'downloadPDF'])->name('printPDF');
         });
     });
 });

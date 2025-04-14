@@ -5,9 +5,11 @@
 
     <div class="border border-gray-200 p-4 rounded-md w-[1000px]">
         <div>
-            <div class="flex">
+            <div class="flex justify-between">
+                <a href="{{ route('admin.user.exportExcel') }}"
+                    class=" text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:ring-blue-200 font-medium rounded-sm text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Export Excel (.Xlsx)</a>
                 <button type="button" data-modal-target="static-modal" data-modal-toggle="static-modal"
-                    class="ml-auto text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-sm text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Tambah
+                    class=" text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-sm text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Tambah
                     User</button>
             </div>
             <table id="search-table">

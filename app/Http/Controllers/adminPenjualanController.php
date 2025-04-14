@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\penjualan;
 use Illuminate\Http\Request;
 
 class adminPenjualanController extends Controller
@@ -11,7 +12,9 @@ class adminPenjualanController extends Controller
      */
     public function index()
     {
-        return view('admin.sales.index');
+        $penjualans = penjualan::with('member', 'penjualanDetails.product', 'user')->get();
+
+        return view('admin.sales.index', compact('penjualans'));
     }
 
     /**

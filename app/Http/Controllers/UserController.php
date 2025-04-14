@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class UserController extends Controller
 {
@@ -107,5 +110,40 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->back()->with('success', 'Berhasil Menghapus User');
+    }
+
+    public function exportExcel(){
+        $data = DB::table('users')->select(
+            'name',
+            'email',
+            'role'
+        )->get();
+
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        $headers = [
+            'Nama',
+            'Email',
+            'Role',
+        ];
+
+        $sheet->fromArray($headers, null,'A1');
+
+        $row = 2;
+
+        foreach ($data as $d ) {
+            $sheet->setCellValue('A' . $row, $d->name ?? '-');
+            $sheet->setCellValue('B' . $row, $d->email ?? '-');
+            $sheet->setCellValue('C' . $row, $d->role ?? '-');
+            $row++;
+        }
+
+        $writer = new Xlsx($spreadsheet);
+        $fileName = 'user.xlsx';
+        $temp_file = tempnam(sys_get_temp_dir(), $fileName);
+        $writer->save($temp_file);
+
+        return response()->download($temp_file, $fileName)->deleteFileAfterSend(true);
     }
 }

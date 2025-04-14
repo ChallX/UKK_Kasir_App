@@ -11,7 +11,7 @@
                 <p>Total Penjualan Hari Ini</p>
             </div>
             <div class="p-5">
-                <p class="text-gray-800 font-semibold">40</p>
+                <p class="text-gray-800 font-semibold">{{$penjualan}}</p>
                 <p>Jumlah total penjualan yang terjadi hari ini.</p>
             </div>
             <div class="p-2 rounded-b-md bg-gray-300">

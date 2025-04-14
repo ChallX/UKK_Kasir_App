@@ -4,9 +4,13 @@
     <h1 class="font-bold mb-5 text-xl">Product</h1>
 
     <div class="border border-gray-200 p-4 rounded-md w-[1000px]">
-        <div class="flex mb-5">
+        <div class="flex justify-between mb-5">
+            <a href="{{ route('admin.product.exportExcel') }}" class="block text-white bg-blue-500 hover:bg-blue-600 focus:ring-4 focus:outline-none focus:ring-blue-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">
+                Export Produk (.Xlsx)
+            </a>
             <button data-modal-target="static-modal" data-modal-toggle="static-modal"
-                class="ml-auto block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 type="button">
                 Tambah Produk
             </button>
@@ -161,7 +165,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     @endforeach
                 </tbody>
             </table>
