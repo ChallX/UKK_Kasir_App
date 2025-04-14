@@ -50,6 +50,7 @@ Route::middleware(['CheckRole:petugas'])->group(function () {
         Route::prefix('/penjualan')->name('penjualan.')->group(function () {
             Route::get('/', [PenjualanController::class, 'index'])->name('index');
             Route::get('/create', [PenjualanController::class, 'create'])->name('create');
+            Route::post('/checkout', [PenjualanController::class, 'checkout'])->name('checkout');
         });
     });
 });

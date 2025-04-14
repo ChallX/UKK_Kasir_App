@@ -25,13 +25,22 @@ class PenjualanController extends Controller
         return view('staff.sales.create', compact('products'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function checkout(Request $request)
     {
-        //
+        $produkDipilih = $request->input('produk', []);
+        $produkDenganQty = [];
+        foreach ($produkDipilih as $id => $qty) {
+            if ((int) $qty > 0) {
+                $produk = product::find($id);
+                if ($produk) {
+                    $produk->jumlah_dipilih = (int) $qty;
+                    $produkDenganQty[] = $produk;
+                }
+            }
+        }
+        return view('staff.sales.checkout', compact('produkDenganQty'));
     }
+
 
     /**
      * Display the specified resource.
