@@ -10,6 +10,11 @@
                     <tr>
                         <th>
                             <span class="flex items-center">
+                                Gambar Produk
+                            </span>
+                        </th>
+                        <th>
+                            <span class="flex items-center">
                                 Nama Produk
                             </span>
                         </th>
@@ -26,15 +31,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Apple Inc.</td>
-                        <td>AAPL</td>
-                        <td>$192.58</td>
-                    </tr>
+                    @foreach ($products as $product)
+                        <tr>
+                            <td><img src="{{ asset('storage/produk/' . $product->image) }}" alt="" width="100"></td>
+                            <td>{{ $product->nama_product }}</td>
+                            <td>{{ $product->harga }}</td>
+                            <td>{{ $product->stock }}</td>
+                        </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>
     </div>
+
+
 
     <script>
         if (document.getElementById("search-table") && typeof simpleDatatables.DataTable !== 'undefined') {
