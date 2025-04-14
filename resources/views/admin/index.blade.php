@@ -12,7 +12,7 @@
         </div>
 
         <div class="my-4" style="height: 300px;">
-            <h2 class="font-semibold text-lg">Pie Chart</h2>
+            <h2 class="font-semibold text-lg">Persentase Keseluruhan Produk</h2>
             <canvas id="myPieChart"></canvas>
         </div>
 

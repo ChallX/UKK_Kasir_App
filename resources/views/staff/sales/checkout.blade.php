@@ -14,21 +14,21 @@
                 @endphp
 
                 @foreach ($produkDenganQty as $product)
-                    @php
-                        $subtotal = $product->jumlah_dipilih * $product->harga;
-                        $total += $subtotal;
-                    @endphp
-                    <p>{{ $product->nama_product }}</p>
-                    <div class="flex gap-54">
-                        <div class="flex gap-1">
-                            <p>Rp{{ number_format($product->harga, 0, ',', '.') }}</p>
-                            <p>*</p>
-                            <p>{{ $product->jumlah_dipilih }}</p>
-                        </div>
-                        <div>
-                            <p class="font-bold">Rp{{ number_format($subtotal, 0, ',', '.') }}</p>
-                        </div>
-                    </div>
+                            @php
+                                $subtotal = $product->jumlah_dipilih * $product->harga;
+                                $total += $subtotal;
+                            @endphp
+                            <p>{{ $product->nama_product }}</p>
+                            <div class="flex gap-54">
+                                <div class="flex gap-1">
+                                    <p>Rp{{ number_format($product->harga, 0, ',', '.') }}</p>
+                                    <p>*</p>
+                                    <p>{{ $product->jumlah_dipilih }}</p>
+                                </div>
+                                <div>
+                                    <p class="font-bold">Rp{{ number_format($subtotal, 0, ',', '.') }}</p>
+                                </div>
+                            </div>
                 @endforeach
                 <div class="flex text-gray-500 gap-8 font-bold text-2xl">
                     <h1>Total</h1>
@@ -42,16 +42,16 @@
                     <input type="hidden" name="total" value="{{ $total }}">
 
                     @foreach ($produkDenganQty as $product)
-                        @php
-                            $subtotal = $product->jumlah_dipilih * $product->harga;
-                        @endphp
-                        <input type="hidden" name="produk[{{ $product->id }}][id]" value="{{ $product->id }}">
-                        <input type="hidden" name="produk[{{ $product->id }}][nama_product]"
-                            value="{{ $product->nama_product }}">
-                        <input type="hidden" name="produk[{{ $product->id }}][harga]" value="{{ $product->harga }}">
-                        <input type="hidden" name="produk[{{ $product->id }}][jumlah_dipilih]"
-                            value="{{ $product->jumlah_dipilih }}">
-                        <input type="hidden" name="produk[{{ $product->id }}][subtotal]" value="{{ $subtotal }}">
+                                    @php
+                                        $subtotal = $product->jumlah_dipilih * $product->harga;
+                                    @endphp
+                                    <input type="hidden" name="produk[{{ $product->id }}][id]" value="{{ $product->id }}">
+                                    <input type="hidden" name="produk[{{ $product->id }}][nama_product]"
+                                        value="{{ $product->nama_product }}">
+                                    <input type="hidden" name="produk[{{ $product->id }}][harga]" value="{{ $product->harga }}">
+                                    <input type="hidden" name="produk[{{ $product->id }}][jumlah_dipilih]"
+                                        value="{{ $product->jumlah_dipilih }}">
+                                    <input type="hidden" name="produk[{{ $product->id }}][subtotal]" value="{{ $subtotal }}">
                     @endforeach
 
                     <div class="mb-5">
@@ -77,7 +77,9 @@
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukkan jumlah pembayaran" />
                     </div>
-                    <button type="submit" class="w-full px-4 py-2 text-white bg-blue-700 rounded-lg">Submit</button>
+                    <button type="submit" id="submit_button"
+                        class="w-full px-4 py-2 text-white bg-gray-400 rounded-lg cursor-not-allowed"
+                        disabled>Submit</button>
                 </form>
             </div>
         </div>
@@ -85,31 +87,64 @@
 
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const memberSelect = document.getElementById('member');
             const noTelpForm = document.getElementById('no_telp_form');
+            const form = document.querySelector('form');
+            const amountPaidInput = document.getElementById('amount_paid');
+            const submitButton = document.getElementById('submit_button');
+            const totalHarga = {{ $total }};
 
-            // Fungsi untuk menampilkan atau menyembunyikan field No Telp
-            memberSelect.addEventListener('change', function() {
-                if (this.value === 'member') {
+            // Tampilkan atau sembunyikan input no telp berdasarkan status member
+            function toggleNoTelp() {
+                if (memberSelect.value === 'member') {
                     noTelpForm.style.display = 'block';
                 } else {
                     noTelpForm.style.display = 'none';
                 }
+            }
+
+            // Validasi input pembayaran dan atur tombol submit aktif/tidak
+            function validatePaymentInput() {
+                const amountPaid = parseFloat(amountPaidInput.value);
+
+                if (!isNaN(amountPaid) && amountPaid >= totalHarga) {
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                    submitButton.classList.add('bg-blue-700');
+                } else {
+                    submitButton.disabled = true;
+                    submitButton.classList.remove('bg-blue-700');
+                    submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
+                }
+            }
+
+            // Hindari submit saat enter di select member
+            memberSelect.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                }
             });
 
-            // Inisialisasi tampilan sesuai nilai awal
-            if (memberSelect.value === 'member') {
-                noTelpForm.style.display = 'block';
-            } else {
-                noTelpForm.style.display = 'none';
-            }
-        });
+            // Event listeners
+            memberSelect.addEventListener('change', toggleNoTelp);
+            amountPaidInput.addEventListener('input', validatePaymentInput);
 
-        document.getElementById('member').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-            }
+            // Inisialisasi saat pertama kali
+            toggleNoTelp();
+            validatePaymentInput();
+
+            // Validasi saat form disubmit (optional, sebagai backup)
+            form.addEventListener('submit', function (e) {
+                const amountPaid = parseFloat(amountPaidInput.value);
+
+                if (isNaN(amountPaid) || amountPaid < totalHarga) {
+                    e.preventDefault();
+                    alert('Total bayar tidak boleh kurang dari total harga barang!');
+                    amountPaidInput.focus();
+                }
+            });
         });
     </script>
+
 @endsection

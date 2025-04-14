@@ -28,6 +28,8 @@ Route::middleware(['CheckRole:admin'])->group(function () {
 
         Route::prefix('/penjualan')->name('penjualan.')->group(function () {
             Route::get('/', [adminPenjualanController::class, 'index'])->name('index');
+            Route::get('/PDF/{id}',[adminPenjualanController::class, 'downloadPDF'] )->name('PrintPDF');
+            Route::get('/exportExcel',[adminPenjualanController::class, 'exportExcelPenjualan'] )->name('exportExcelPenjualan');
         });
 
         Route::prefix('/user')->name('user.')->group(function () {
