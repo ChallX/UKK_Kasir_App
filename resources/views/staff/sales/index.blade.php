@@ -94,7 +94,7 @@
                                             <div class="text-sm">
                                                 <p>Member Status : {{ $penjualan->member->status_member }}</p>
                                                 <p>No Hp : {{ $penjualan->member->no_telp }}</p>
-                                                <p>Poin : {{ $penjualan->member->poin }}</p>
+                                                <p>Poin Tersisa : {{ $penjualan->member->PoinToBeUsed }}</p>
                                             </div>
                                             <div class="text-sm">
                                                 <p>Bergabung Sejak : {{ $penjualan->member->created_at }}</p>

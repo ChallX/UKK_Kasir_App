@@ -17,7 +17,7 @@
                     @if ($penjualan->member)
                     <p class="font-bold">{{ $penjualan->member->no_telp }}</p>
                     <p>Member Sejak : {{ $penjualan->member->created_at }}</p>
-                    <p>Member Poin : {{ $penjualan->member->poin }}</p>
+                    <p>Member Poin Tersisa : {{ $penjualan->member->PoinToBeUsed }}</p>
                     @endif
                 </div>
                 <div class="text-gray-500">

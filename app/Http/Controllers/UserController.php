@@ -122,15 +122,21 @@ class UserController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
+        $sheet->setCellValue('A1', 'Data User Kasir Pure Cart');
+        
+        $sheet->mergeCells('A1:J1');
+        $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
+        $sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
         $headers = [
             'Nama',
             'Email',
             'Role',
         ];
 
-        $sheet->fromArray($headers, null,'A1');
+        $sheet->fromArray($headers, null,'A2');
 
-        $row = 2;
+        $row = 3;
 
         foreach ($data as $d ) {
             $sheet->setCellValue('A' . $row, $d->name ?? '-');

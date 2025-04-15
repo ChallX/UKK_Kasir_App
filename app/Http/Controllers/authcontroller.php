@@ -26,12 +26,12 @@ class authcontroller extends Controller
             $user = Auth::user();
 
             if ($user->role == 'admin') {
-                return redirect()->route('admin.index');
+                return redirect()->route('admin.index')->with('success', 'Berhasil Login');
             } else if ($user->role == 'petugas') {
-                return redirect()->route('petugas.index');
+                return redirect()->route('petugas.index')->with('success', 'Berhasil Login');
             }
         } else {
-            return back()->withErrors(['email' => 'Email atau Password salah'])->withInput();
+            return back()->with('error', 'Email atau Password salah');
         }
     }
 
@@ -40,7 +40,7 @@ class authcontroller extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Berhasil Log Out');
     }
 
     public function error(){

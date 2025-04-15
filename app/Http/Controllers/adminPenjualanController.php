@@ -32,7 +32,8 @@ class adminPenjualanController extends Controller
                 'penjualans.id as penjualan_id',
                 'members.nama_pelanggan',
                 'members.no_telp',
-                'members.poin',
+                'members.PoinToBeUsed',
+                'members.StoredPoin',
                 'products.nama_product',
                 'penjualan_details.qty',
                 'penjualan_details.subtotal',
@@ -44,14 +45,21 @@ class adminPenjualanController extends Controller
             )
             ->get()
             ->groupBy('penjualan_id');
-    
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-    
+
+        $sheet->setCellValue('A1', 'Data Penjualan Kasir Pure Cart');
+
+        $sheet->mergeCells('A1:J1');
+        $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
+        $sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
         $headers = [
             'Nama Pelanggan',
             'No HP Pelanggan',
-            'Poin Pelanggan',
+            'Poin Pelanggan Yang Bisa Digunakan',
+            'Poin Pelanggan Yang Tersimpan',
             'Produk (Qtyx)',
             'Subtotal Produk',
             'Total Harga',
@@ -60,39 +68,40 @@ class adminPenjualanController extends Controller
             'Total Kembalian',
             'Tanggal Pembelian'
         ];
-    
-        $sheet->fromArray($headers, null, 'A1');
-    
-        $row = 2;
+
+        $sheet->fromArray($headers, null, 'A2');
+
+        $row = 3;
         foreach ($data as $penjualan) {
             $first = $penjualan->first();
-    
+
             $produkGabung = $penjualan->map(function ($item) {
                 return $item->nama_product . ' ' . $item->qty . 'x';
             })->implode(', ');
-    
+
             $subtotalGabung = $penjualan->map(function ($item) {
                 return number_format($item->subtotal, 0, ',', '.');
             })->implode(', ');
-    
+
             $sheet->setCellValue('A' . $row, $first->nama_pelanggan ?? 'Bukan Member');
             $sheet->setCellValue('B' . $row, $first->no_telp ?? '-');
-            $sheet->setCellValue('C' . $row, $first->poin ?? 0);
-            $sheet->setCellValue('D' . $row, $produkGabung);
-            $sheet->setCellValue('E' . $row, $subtotalGabung);
-            $sheet->setCellValue('F' . $row, $first->total);
-            $sheet->setCellValue('G' . $row, $first->amount_paid);
-            $sheet->setCellValue('H' . $row, $first->poin_used ?? 0);
-            $sheet->setCellValue('I' . $row, $first->change ?? 0);
-            $sheet->setCellValue('J' . $row, $first->created_at);
+            $sheet->setCellValue('C' . $row, $first->PoinToBeUsed ?? 0);
+            $sheet->setCellValue('D' . $row, $first->StoredPoin ?? 0);
+            $sheet->setCellValue('E' . $row, $produkGabung);
+            $sheet->setCellValue('F' . $row, $subtotalGabung);
+            $sheet->setCellValue('G' . $row, $first->total);
+            $sheet->setCellValue('H' . $row, $first->amount_paid);
+            $sheet->setCellValue('I' . $row, $first->poin_used ?? 0);
+            $sheet->setCellValue('J' . $row, $first->change ?? 0);
+            $sheet->setCellValue('K' . $row, $first->created_at);
             $row++;
         }
-    
+
         $writer = new Xlsx($spreadsheet);
         $fileName = 'penjualan.xlsx';
         $temp_file = tempnam(sys_get_temp_dir(), $fileName);
         $writer->save($temp_file);
-    
+
         return response()->download($temp_file, $fileName)->deleteFileAfterSend(true);
     }
 

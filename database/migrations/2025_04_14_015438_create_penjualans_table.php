@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('penjualans', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('member_id');
-            $table->integer('total');
-            $table->integer('totalafterpoin');
-            $table->integer('amount_paid');
-            $table->integer('poin_used');
-            $table->integer('change');
+            $table->unsignedBigInteger('member_id')->nullable();
+            $table->integer('total')->nullable();
+            $table->integer('totalafterpoin')->nullable();
+            $table->integer('amount_paid')->nullable();
+            $table->integer('poin_used')->nullable();
+            $table->integer('change')->nullable();
             $table->timestamps();
 
 

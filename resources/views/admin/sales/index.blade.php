@@ -92,7 +92,7 @@
                                                 <div class="text-sm">
                                                     <p>Member Status : {{ $penjualan->member->status_member }}</p>
                                                     <p>No Hp : {{ $penjualan->member->no_telp }}</p>
-                                                    <p>Poin : {{ $penjualan->member->poin }}</p>
+                                                    <p>Poin Tersisa : {{ $penjualan->member->PoinToBeUsed }}</p>
                                                 </div>
                                                 <div class="text-sm">
                                                     <p>Bergabung Sejak : {{ $penjualan->member->created_at }}</p>
@@ -134,6 +134,29 @@
         </div>
     </div>
 
+
+    @if (session('success'))
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 2000
+        });
+    </script>
+@endif
+
+@if (session('error'))
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops!',
+            text: '{{ session('error') }}',
+            showConfirmButton: true
+        });
+    </script>
+@endif
     <script>
         if (document.getElementById("search-table") && typeof simpleDatatables.DataTable !== 'undefined') {
             const dataTable = new simpleDatatables.DataTable("#search-table", {

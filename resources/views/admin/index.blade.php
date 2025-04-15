@@ -3,7 +3,7 @@
 @section('content')
     <h1 class="font-bold text-xl">Dashboard</h1>
 
-    <div class="mt-5 border rounded-md p-2 h-[630px] border-gray-200">
+    <div class="mt-5 border rounded-md p-2 h-[930px] border-gray-200">
         <h1 class="font-bold">Selamat Datang, Administrator !</h1>
 
         <div class="my-4">

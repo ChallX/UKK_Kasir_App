@@ -108,15 +108,21 @@ class ProductController extends Controller
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
+        $sheet->setCellValue('A1', 'Data Produk Kasir Pure Cart');
+        
+        $sheet->mergeCells('A1:J1');
+        $sheet->getStyle('A1')->getFont()->setBold(true)->setSize(14);
+        $sheet->getStyle('A1')->getAlignment()->setHorizontal(\PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER);
+
         $headers = [
             'Nama Produk',
             'Harga',
             'Stock'
         ];
 
-        $sheet->fromArray($headers, null, 'A1');
+        $sheet->fromArray($headers, null, 'A2');
 
-        $row = 2;
+        $row = 3;
 
         foreach ($data as $d ) {
             $sheet->setCellValue('A' . $row, $d->nama_product ?? 'Produk Tidak Memiliki Nama');

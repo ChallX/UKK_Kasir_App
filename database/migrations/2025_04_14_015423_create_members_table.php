@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_pelanggan');
+            $table->string('nama_pelanggan')->nullable();
             $table->string('no_telp');
+            $table->string('PoinToBeUsed');
+            $table->string('StoredPoin');
             $table->enum('status_member', ['member','not_member']);
             $table->timestamps();
         });

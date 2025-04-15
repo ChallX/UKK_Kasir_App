@@ -15,7 +15,7 @@
                 <p>Jumlah total penjualan yang terjadi hari ini.</p>
             </div>
             <div class="p-2 rounded-b-md bg-gray-300">
-                <p>Terakhir diperbarui: 09 Apr 2025 05:28</p>
+                <p>Terakhir diperbarui: {{ $date->created_at }}</p>
             </div>
         </div>
     </div>
